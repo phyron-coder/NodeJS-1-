@@ -1,0 +1,13 @@
+================= npm =================
+
+1- npm init -y
+
+2- npm i express
+
+3- npm i nodemon
+
+4- npm install dotenv. // require('dotenv').config(); // Load environment variables
+
+5- npm install mysql //   
+
+6- npm install mongoose // const mongoose = require('mongoose')
