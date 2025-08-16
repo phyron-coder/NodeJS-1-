@@ -1,25 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
-// const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-
 const userModel = require('../model/userModel');
-const { upload, Id } = require('../handler/middleware');
-
-
-
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'uploads/'); // folder to store images
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, Date.now() + path.extname(file.originalname));
-//     }
-// });
-
-// const upload = multer({ storage });
+const { upload } = require('../handler/middleware');
 
 
 
@@ -29,7 +11,7 @@ router.get('/user', async (req, res) => {
     res.json(dataUser);
 })
 
-router.get('/user/:id', Id, async (req, res) => {
+router.get('/user/:id', async (req, res) => {
     try {
         const id = req.params.id;
 

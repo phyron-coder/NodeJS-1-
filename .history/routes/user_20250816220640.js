@@ -1,25 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-// const multer = require('multer');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
 const userModel = require('../model/userModel');
-const { upload, Id } = require('../handler/middleware');
 
 
 
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'uploads/'); // folder to store images
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, Date.now() + path.extname(file.originalname));
-//     }
-// });
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // folder to store images
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
 
-// const upload = multer({ storage });
+const upload = multer({ storage });
 
 
 
@@ -29,7 +28,7 @@ router.get('/user', async (req, res) => {
     res.json(dataUser);
 })
 
-router.get('/user/:id', Id, async (req, res) => {
+router.get('/user/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -67,93 +66,47 @@ router.post('/user', upload.single('image'), async (req, res) => {
 });
 
 
-// router.patch('/user/:id', upload.single('image'), async (req, res) => {
-//     try {
-//         const id = req.params.id;
-
-//         // const updateUser = await userModel.findByIdAndUpdate(id, req.body);
-//         // 1️⃣ Find user by ID
-//         const updateUser = await userModel.findById(id);
-
-//         if (!updateUser) {
-//             return res.status(404).json({
-//                 status: "error",
-//                 message: "User not found"
-//             })
-//         }
-//         // 2️⃣ Handle image updateUser
-//         if (req.file) {
-//             // Delete old image if exists
-//             if (updateUser.image) {
-//                 const oldImagePath = path.join(__dirname, '..', 'uploads', user.image);
-//                 try {
-//                     await fs.unlink(oldImagePath);
-//                     console.log("Old image deleted:", user.image);
-//                 } catch (err) {
-//                     console.error("Failed to delete old image:", err);
-//                 }
-//             }
-//             req.body.image = req.file.filename;
-//         }
-//         const updateuUserMain = await userModel.findByIdAndUpdate(id, req.body, { new: true })
-
-//         res.status(200).json({
-//             status: "success",
-//             data: updateuUserMain
-//         });
-
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ status: "error", message: error.message });
-//     }
-// });
-
-
-router.patch('/user/:id', upload.single("image"), async (req, res) => {
+router.patch('/user/:id', upload.single('image'), async (req, res) => {
     try {
         const id = req.params.id;
 
+        // const updateUser = await userModel.findByIdAndUpdate(id, req.body);
         // 1️⃣ Find user by ID
-        const user = await userModel.findById(id);
-        if (!user) {
+        const updateUser = await userModel.findById(id);
+
+        if (!updateUser) {
             return res.status(404).json({
                 status: "error",
                 message: "User not found"
-            });
+            })
         }
-
-        // 2️⃣ Handle image update
+        // 2️⃣ Handle image updateUser
         if (req.file) {
             // Delete old image if exists
-            if (user.image) {
+            if (updateUser.image) {
                 const oldImagePath = path.join(__dirname, '..', 'uploads', user.image);
                 try {
-                    fs.unlink(oldImagePath, (err) => {
-                        console.log("Old image deleted:", user.image);
-                    });
+                    await fs.unlink(oldImagePath);
+                    console.log("Old image deleted:", user.image);
                 } catch (err) {
                     console.error("Failed to delete old image:", err);
                 }
             }
             req.body.image = req.file.filename;
         }
-
-        // 3️⃣ Update user data using Model
-        const updatedUser = await userModel.findByIdAndUpdate(id, req.body, { new: true });
+        const updateuUserMain = await userModel.findByIdAndUpdate(id, req.body, { new: true })
 
         res.status(200).json({
             status: "success",
-            data: updatedUser
+            data: updateuUserMain
         });
+
 
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: "error", message: error.message });
     }
 });
-
-
 
 router.delete('/user/:id', async (req, res) => {
 
@@ -170,7 +123,7 @@ router.delete('/user/:id', async (req, res) => {
 
         if (deleteUser.image) {
             const imagePath = path.join(__dirname, '..', 'uploads', deleteUser.image);
-            fs.unlink(imagePath, (err, result) => {
+            fs.unlinkSync(imagePath, (err, result) => {
                 if (err) {
                     res.json({
                         status: "error",

@@ -24,12 +24,12 @@ const { upload, Id } = require('../handler/middleware');
 
 
 
-router.get('/user', async (req, res) => {
+router.get('/user', Id, async (req, res) => {
     const dataUser = await userModel.find();
     res.json(dataUser);
 })
 
-router.get('/user/:id', Id, async (req, res) => {
+router.get('/user/:id', async (req, res) => {
     try {
         const id = req.params.id;
 

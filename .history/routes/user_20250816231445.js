@@ -29,7 +29,7 @@ router.get('/user', async (req, res) => {
     res.json(dataUser);
 })
 
-router.get('/user/:id', Id, async (req, res) => {
+router.get('/user/:id', async (req, res) => {
     try {
         const id = req.params.id;
 

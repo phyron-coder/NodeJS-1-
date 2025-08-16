@@ -11,5 +11,3 @@
 5- npm install mysql // var mysql = require('mysql');
 
 6- npm install mongoose // const mongoose = require('mongoose')
-
-7- npm install cors // var cors = require('cors')

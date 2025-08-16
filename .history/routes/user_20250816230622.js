@@ -29,7 +29,7 @@ router.get('/user', async (req, res) => {
     res.json(dataUser);
 })
 
-router.get('/user/:id', Id, async (req, res) => {
+router.get('/user/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -110,7 +110,7 @@ router.post('/user', upload.single('image'), async (req, res) => {
 // });
 
 
-router.patch('/user/:id', upload.single("image"), async (req, res) => {
+router.patch('/user/:id', Id, upload.single("image"), async (req, res) => {
     try {
         const id = req.params.id;
 
